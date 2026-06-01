@@ -2,6 +2,7 @@ package br.com.loja.observer;
 
 import br.com.loja.modelo.Pedido;
 
+@ObserverAction
 public class TransportadoraObserver implements PedidoObserver {
 
     @Override

@@ -3,6 +3,7 @@ package br.com.loja.observer;
 import br.com.loja.modelo.ItemPedido;
 import br.com.loja.modelo.Pedido;
 
+@ObserverAction
 public class EstoqueObserver implements PedidoObserver {
 
     @Override
