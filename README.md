@@ -1,4 +1,4 @@
-# 🛒 Sistema de Gestão de Pedidos (com Observer + Reflexão)
+# 🛒 Sistema de Gestão de Pedidos v3.0 - Padrão Observer + Reflexão
 
 Este projeto é uma implementação avançada do padrão de projeto comportamental **Observer**, evoluído com o uso de **Anotações** e **Reflexão** para atingir o desacoplamento total. Desenvolvido como trabalho final para a disciplina de **Programação Orientada a Objetos Avançada**.
 
@@ -61,7 +61,7 @@ classDiagram
 
 ### 1. Clonando o Repositório
 ```bash
-git clone https://github.com/seu-usuario/projeto-observer-poo-avancada.git
+git clone https://github.com/SEU-USUARIO/projeto-observer-poo-avancada.git
 cd projeto-observer-poo-avancada
 ```
 
