@@ -23,7 +23,12 @@ public class ServicoDePedidos {
                 + " finalizado (" + pedido.getCliente().getNome() + ")");
 
         for (PedidoObserver observer : observers) {
-            observer.pedidoFinalizado(pedido);
+            try {
+                observer.pedidoFinalizado(pedido);
+            } catch (Exception e) {
+                System.err.println("[ERRO] Falha ao notificar observador: " 
+                        + observer.getClass().getSimpleName() + " - " + e.getMessage());
+            }
         }
 
         System.out.println();
