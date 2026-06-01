@@ -1,6 +1,6 @@
-# 🛒 Sistema de Gestão de Pedidos (Padrão Observer)
+# 🛒 Sistema de Gestão de Pedidos (com Observer + Reflexão)
 
-Este projeto é uma implementação robusta do padrão de projeto comportamental **Observer**, desenvolvido como trabalho final para a disciplina de **Programação Orientada a Objetos Avançada**.
+Este projeto é uma implementação avançada do padrão de projeto comportamental **Observer**, evoluído com o uso de **Anotações** e **Reflexão** para atingir o desacoplamento total. Desenvolvido como trabalho final para a disciplina de **Programação Orientada a Objetos Avançada**.
 
 *   **Curso:** Bacharelado em Engenharia de Software
 *   **Disciplina:** Programação Orientada a Objetos Avançada
@@ -13,9 +13,9 @@ Este projeto é uma implementação robusta do padrão de projeto comportamental
     *   Marcio Ventura
     *   Rodrigo dos Santos
 
-## Arquitetura do Projeto
+## Arquitetura do Código
 
-O sistema simula o fluxo de finalização de um pedido em um e-commerce, onde diversos sistemas periféricos precisam reagir ao evento de "pedido finalizado" de forma independente e desacoplada. A aplicação foca no desacoplamento entre o **Sujeito (Subject)** e seus **Observadores (Observers)**.
+O sistema utiliza o padrão Observer para notificar múltiplos sistemas periféricos sobre a finalização de um pedido. A grande inovação desta versão é a **Inversão de Controle** via Reflexão: os observadores são descobertos e registrados automaticamente pelo sistema, sem necessidade de configuração manual na classe `Main`.
 
 ### Diagrama de Classes (Mermaid)
 
@@ -25,100 +25,66 @@ classDiagram
         <<interface>>
         +pedidoFinalizado(Pedido pedido)
     }
+    class ObserverAction {
+        <<annotation>>
+    }
+    class RegistroAutomatico {
+        +registrarObservadores(ServicoDePedidos servico)
+    }
     class ServicoDePedidos {
         -List~PedidoObserver~ observers
         +registrar(PedidoObserver observer)
-        +remover(PedidoObserver observer)
         +finalizarPedido(Pedido pedido)
     }
+    
     class EmailObserver { +pedidoFinalizado(Pedido pedido) }
     class EstoqueObserver { +pedidoFinalizado(Pedido pedido) }
-    class NotaFiscalObserver { +pedidoFinalizado(Pedido pedido) }
-    class FidelidadeObserver { +pedidoFinalizado(Pedido pedido) }
-    class TransportadoraObserver { +pedidoFinalizado(Pedido pedido) }
 
-    ServicoDePedidos o-- PedidoObserver : mantém
     EmailObserver ..|> PedidoObserver
     EstoqueObserver ..|> PedidoObserver
-    NotaFiscalObserver ..|> PedidoObserver
-    FidelidadeObserver ..|> PedidoObserver
-    TransportadoraObserver ..|> PedidoObserver
+    EmailObserver ..> ObserverAction : @ObserverAction
+    EstoqueObserver ..> ObserverAction : @ObserverAction
     
-    ServicoDePedidos ..> Pedido : processa
+    RegistroAutomatico ..> ObserverAction : busca por
+    RegistroAutomatico ..> ServicoDePedidos : registra em
+    ServicoDePedidos o-- PedidoObserver : mantém
 ```
 
 ### Componentes Principais
 
-1.  **Sujeito (`ServicoDePedidos`)**: Gerencia a lista de observadores e notifica-os quando um pedido é concluído. Não conhece as implementações concretas dos observadores.
-2.  **Interface Observer (`PedidoObserver`)**: Define o contrato que todas as ações pós-venda devem seguir.
-3.  **Observadores Concretos**:
-    *   `EmailObserver`: Envio de comunicações.
-    *   `EstoqueObserver`: Abatimento de inventário.
-    *   `NotaFiscalObserver`: Emissão de documentos fiscais.
-    *   `FidelidadeObserver`: Cálculo de pontos/recompensas.
-    *   `TransportadoraObserver`: Agendamento de logística.
+1.  **Sujeito (`ServicoDePedidos`)**: Gerencia e notifica os observadores. Possui tratamento de erros (try-catch) no loop para garantir que a falha de um observador não interrompa os demais.
+2.  **Anotação `@ObserverAction`**: Marca as classes que devem ser "plugadas" automaticamente no sistema.
+3.  **Mecanismo de Reflexão (`RegistroAutomatico`)**: Escaneia o pacote de observadores em tempo de execução, instanciando e registrando dinamicamente todas as classes anotadas.
+4.  **Observadores Concretos**: Classes como `EmailObserver`, `EstoqueObserver`, etc., que agora são totalmente independentes e auto-registráveis.
 
-## 🚀 Como Rodar o Projeto
+## Como Rodar Localmente?
 
 ### 1. Clonando o Repositório
-Abra o seu terminal e execute:
 ```bash
-git clone https://github.com/SEU-USUARIO/projeto-observer-poo-avancada.git
+git clone https://github.com/seu-usuario/projeto-observer-poo-avancada.git
 cd projeto-observer-poo-avancada
 ```
 
-### 2. Pré-requisitos
-*   **Java JDK 11** ou superior instalado.
-*   Variável de ambiente `JAVA_HOME` configurada.
-*   **Git** instalado.
-
-### 3. Execução por Sistema Operacional
-
-> **Dica:** Se você utiliza o **VS Code** ou **IntelliJ**, basta abrir a pasta raiz e clicar em "Run" na classe `Main.java`. A IDE cuidará da compilação automaticamente.
+### 2. Execução por Sistema Operacional
 
 #### 🐧 Linux e 🍎 macOS
-1.  Abra o terminal na pasta raiz do projeto.
-2.  Compile o código:
-    ```bash
-    mkdir -p bin
-    javac -d bin -sourcepath src src/br/com/loja/Main.java
-    ```
-3.  Execute a aplicação:
-    ```bash
-    java -cp bin br.com.loja.Main
-    ```
-
-#### 🪟 Windows
-1.  Abra o CMD ou PowerShell na pasta raiz do projeto.
-2.  Compile o código:
-    ```cmd
-    if not exist bin mkdir bin
-    javac -d bin -sourcepath src src/br/com/loja/Main.java
-    ```
-3.  Execute a aplicação:
-    ```cmd
-    java -cp bin br.com.loja.Main
-    ```
-
----
-
-
-## Estrutura de Arquivos
-
-```text
-src/br/com/loja/
-├── modelo/      # Entidades (Pedido, Produto, Cliente, ItemPedido)
-├── observer/    # Interface e Implementações do Padrão Observer
-├── servico/    # Lógica de Negócio (ServicoDePedidos)
-└── Main.java    # Demonstração do fluxo e registro dinâmico
+```bash
+mkdir -p bin
+javac -d bin -sourcepath src src/br/com/loja/Main.java
+java -cp bin br.com.loja.Main
 ```
 
-## Conceitos Aplicados
+#### 🪟 Windows
+```cmd
+if not exist bin mkdir bin
+javac -d bin -sourcepath src src/br/com/loja/Main.java
+java -cp bin br.com.loja.Main
+```
 
-*   **DIP (Dependency Inversion Principle)**: O serviço de pedidos depende de uma interface, não de classes concretas.
-*   **OCP (Open/Closed Principle)**: Novos comportamentos podem ser adicionados (novos observadores) sem modificar o código do serviço de pedidos.
-*   **Tratamento de Exceções no Loop**: Implementado isolamento de falhas para garantir que um erro em um observador não interrompa os demais.
-*   **Encapsulamento**: Uso de `Collections.unmodifiableList` para proteger o estado interno das entidades.
+## 🧠 Conceitos Avançados Aplicados
 
----
-**Projeto desenvolvido pela Equipe de POO Avançada.**
+*   **DIP (Dependency Inversion Principle)**: O sistema depende de abstrações, não de implementações.
+*   **Inversão de Controle (IoC)**: O registro dos observadores não é mais controlado pela lógica principal (`Main`), mas sim pelo mecanismo de Reflexão.
+*   **Java Reflection API**: Utilizada para introspecção de pacotes e instanciação dinâmica de objetos.
+*   **Anotações Customizadas**: Criação de metadados próprios para guiar o comportamento da arquitetura.
+*   **Resiliência (Isolamento de Falhas)**: Tratamento de exceções robusto no loop de notificação do padrão Observer.

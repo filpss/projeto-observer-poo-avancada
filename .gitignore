@@ -4,6 +4,8 @@
 # Log file
 *.log
 .instrucoes.md
+DOCUMENTACAO_ETAPA2.md
+DOCUMENTACAO_ETAPA3.md
 
 # BlueJ files
 *.ctxt
@@ -23,3 +25,6 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+
+
+docs/
