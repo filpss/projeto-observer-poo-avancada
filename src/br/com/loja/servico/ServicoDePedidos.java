@@ -1,42 +1,31 @@
 package br.com.loja.servico;
 
-import br.com.loja.modelo.ItemPedido;
 import br.com.loja.modelo.Pedido;
+import br.com.loja.observer.PedidoObserver;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServicoDePedidos {
+
+    private final List<PedidoObserver> observers = new ArrayList<>();
+
+    public void registrar(PedidoObserver observer) {
+        observers.add(observer);
+    }
+
+    public void remover(PedidoObserver observer) {
+        observers.remove(observer);
+    }
 
     public void finalizarPedido(Pedido pedido) {
         System.out.println("==> Pedido #" + pedido.getId()
                 + " finalizado (" + pedido.getCliente().getNome() + ")");
 
-        enviarEmailConfirmacao(pedido);
-        baixarEstoque(pedido);
-        agendarTransportadora(pedido);
-        creditarPontosFidelidade(pedido);
+        for (PedidoObserver observer : observers) {
+            observer.pedidoFinalizado(pedido);
+        }
 
         System.out.println();
-    }
-
-    private void enviarEmailConfirmacao(Pedido pedido) {
-        System.out.printf("[E-MAIL] Enviado para %s: pedido #%d confirmado.%n",
-                pedido.getCliente().getNome(), pedido.getId());
-    }
-
-    private void baixarEstoque(Pedido pedido) {
-        for (ItemPedido item : pedido.getItens()) {
-            System.out.printf("[ESTOQUE] -%d unidade(s) de %s.%n",
-                    item.getQuantidade(), item.getProduto().getNome());
-        }
-    }
-
-    private void agendarTransportadora(Pedido pedido) {
-        System.out.printf("[TRANSPORTADORA] Coleta agendada para o pedido #%d.%n",
-                pedido.getId());
-    }
-
-    private void creditarPontosFidelidade(Pedido pedido) {
-        int pontos = (int) Math.floor(pedido.getValorTotal());
-        System.out.printf("[FIDELIDADE] +%d pontos para %s.%n",
-                pontos, pedido.getCliente().getNome());
     }
 }
