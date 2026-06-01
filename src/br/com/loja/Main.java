@@ -4,12 +4,6 @@ import br.com.loja.modelo.Cliente;
 import br.com.loja.modelo.ItemPedido;
 import br.com.loja.modelo.Pedido;
 import br.com.loja.modelo.Produto;
-import br.com.loja.observer.EmailObserver;
-import br.com.loja.observer.EstoqueObserver;
-import br.com.loja.observer.FidelidadeObserver;
-import br.com.loja.observer.NotaFiscalObserver;
-import br.com.loja.observer.PedidoObserver;
-import br.com.loja.observer.TransportadoraObserver;
 import br.com.loja.servico.RegistroAutomatico;
 import br.com.loja.servico.ServicoDePedidos;
 
