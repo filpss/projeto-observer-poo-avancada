@@ -65,7 +65,14 @@ git clone https://github.com/SEU-USUARIO/projeto-observer-poo-avancada.git
 cd projeto-observer-poo-avancada
 ```
 
-### 2. Execução por Sistema Operacional
+### 2. Selecionando essa versão
+Rode o código abaixo para selecionar a versão 1.0.
+```bash
+git checkout v3.0-com-observer-reflexao-anotacao
+```
+
+### 3. Execução por Sistema Operacional
+Se você utiliza o Eclipse, VS Code ou IntelliJ, basta abrir a pasta raiz e clicar em **Run** na classe Main.java. A IDE cuidará da compilação automaticamente.
 
 #### 🐧 Linux e 🍎 macOS
 ```bash
@@ -80,11 +87,3 @@ if not exist bin mkdir bin
 javac -d bin -sourcepath src src/br/com/loja/Main.java
 java -cp bin br.com.loja.Main
 ```
-
-## 🧠 Conceitos Avançados Aplicados
-
-*   **DIP (Dependency Inversion Principle)**: O sistema depende de abstrações, não de implementações.
-*   **Inversão de Controle (IoC)**: O registro dos observadores não é mais controlado pela lógica principal (`Main`), mas sim pelo mecanismo de Reflexão.
-*   **Java Reflection API**: Utilizada para introspecção de pacotes e instanciação dinâmica de objetos.
-*   **Anotações Customizadas**: Criação de metadados próprios para guiar o comportamento da arquitetura.
-*   **Resiliência (Isolamento de Falhas)**: Tratamento de exceções robusto no loop de notificação do padrão Observer.

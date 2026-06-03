@@ -3,9 +3,6 @@
 
 # Log file
 *.log
-.instrucoes.md
-DOCUMENTACAO_ETAPA2.md
-DOCUMENTACAO_ETAPA3.md
 
 # BlueJ files
 *.ctxt
@@ -26,5 +23,6 @@ DOCUMENTACAO_ETAPA3.md
 hs_err_pid*
 replay_pid*
 
-
-docs/
+bin
+.classpath
+.project
