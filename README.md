@@ -54,6 +54,7 @@ cd projeto-observer-poo-avancada
 ```
 
 ### 2. Execução por Sistema Operacional
+Se você utiliza o Eclipse, VS Code ou IntelliJ, basta abrir a pasta raiz e clicar em **Run** na classe Main.java. A IDE cuidará da compilação automaticamente.
 
 #### 🐧 Linux e 🍎 macOS
 ```bash

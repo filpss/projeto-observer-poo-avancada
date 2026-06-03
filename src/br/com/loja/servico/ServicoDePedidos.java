@@ -6,8 +6,7 @@ import br.com.loja.modelo.Pedido;
 public class ServicoDePedidos {
 
     public void finalizarPedido(Pedido pedido) {
-        System.out.println("==> Pedido #" + pedido.getId()
-                + " finalizado (" + pedido.getCliente().getNome() + ")");
+        System.out.println("==> Pedido #" + pedido.getId()+ " finalizado (" + pedido.getCliente().getNome() + ")");
 
         enviarEmailConfirmacao(pedido);
         baixarEstoque(pedido);
@@ -18,14 +17,12 @@ public class ServicoDePedidos {
     }
 
     private void enviarEmailConfirmacao(Pedido pedido) {
-        System.out.printf("[E-MAIL] Enviado para %s: pedido #%d confirmado.%n",
-                pedido.getCliente().getNome(), pedido.getId());
+        System.out.printf("[E-MAIL] Enviado para %s: pedido #%d confirmado.%n", pedido.getCliente().getNome(), pedido.getId());
     }
 
     private void baixarEstoque(Pedido pedido) {
         for (ItemPedido item : pedido.getItens()) {
-            System.out.printf("[ESTOQUE] -%d unidade(s) de %s.%n",
-                    item.getQuantidade(), item.getProduto().getNome());
+            System.out.printf("[ESTOQUE] -%d unidade(s) de %s.%n",item.getQuantidade(), item.getProduto().getNome());
         }
     }
 
@@ -36,7 +33,6 @@ public class ServicoDePedidos {
 
     private void creditarPontosFidelidade(Pedido pedido) {
         int pontos = (int) Math.floor(pedido.getValorTotal());
-        System.out.printf("[FIDELIDADE] +%d pontos para %s.%n",
-                pontos, pedido.getCliente().getNome());
+        System.out.printf("[FIDELIDADE] +%d pontos para %s.%n", pontos, pedido.getCliente().getNome());
     }
 }
